@@ -6,8 +6,7 @@ const app = express();
 const port = 3000;
 
 // Middleware to parse incoming request bodies
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // MySQL database connection
 const db = mysql.createConnection({
@@ -40,9 +39,9 @@ app.get('/users', (req, res) => {
 });
 
 // Get a specific user by ID
-app.get('/users/:id', (req, res) => {
-    const userId = req.params.id;
-    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+app.get('/users/:ssn', (req, res) => {
+    const userId = req.params.ssn;
+    db.query('SELECT * FROM users WHERE ssn = ?', [userId], (err, results) => {
         if (err) {
             res.status(500).send('Internal Server Error');
         } else {
@@ -64,10 +63,10 @@ app.post('/users', (req, res) => {
 });
 
 // Update a user by ID
-app.put('/users/:id', (req, res) => {
-    const userId = req.params.id;
+app.put('/users/:ssn', (req, res) => {
+    const userId = req.params.ssn;
     const updatedUser = req.body;
-    db.query('UPDATE users SET ? WHERE id = ?', [updatedUser, userId], (err) => {
+    db.query('UPDATE users SET ? WHERE ssn = ?', [updatedUser, userId], (err) => {
         if (err) {
             res.status(500).send('Internal Server Error');
         } else {
@@ -77,9 +76,9 @@ app.put('/users/:id', (req, res) => {
 });
 
 // Delete a user by ID
-app.delete('/users/:id', (req, res) => {
-    const userId = req.params.id;
-    db.query('DELETE FROM users WHERE id = ?', [userId], (err) => {
+app.delete('/users/:ssn', (req, res) => {
+    const userId = req.params.ssn;
+    db.query('DELETE FROM users WHERE ssn = ?', [userId], (err) => {
         if (err) {
             res.status(500).send('Internal Server Error');
         } else {
